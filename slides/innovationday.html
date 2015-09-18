@@ -22,7 +22,7 @@
   <link rel="stylesheet" media="screen" href="../extensions/scale/deck.scale.css">
 
   <!-- Style theme. More available in /themes/style/ or create your own. -->
-  <link id="style-theme-link" rel="stylesheet" media="screen" href="../themes/style/neon.css">
+  <link id="style-theme-link" rel="stylesheet" media="screen" href="../themes/style/greg.css">
 
   <!-- Transition theme. More available in /themes/transition/ or create your own. -->
   <link id="transition-theme-link" rel="stylesheet" media="screen" href="../themes/transition/horizontal-slide.css">
@@ -44,8 +44,9 @@
     <section class="slide">
       <h2>Toulouse Android User Group</h2>
       <h1>
-        OpenGL ES 2.0 - Shaders
-        CardBoard SDK
+        OpenGL ES 2.0<br />
+        Shaders<br />
+        CardBoard SDK<br />
       </h1>
     </section>
 
@@ -74,14 +75,15 @@
       <h2>OpenGL ES 2.0</h2>
       <h3>Eléments</h3>
       <ul>
-        <li>Vertex (Vertices).</li>
+        <li>Vertex (Vertices) et attributs (Normales, Couleurs, coordonnées de Texture...).</li>
+        <li>Types: Scalaires, Vecteurs, Matrices, Structures.</li>
         <li>Textures.</li>
-        <li>Vertex Attributes (Normales, Couleurs, coordonnées de Texture...).</li>
-        <li>Paramètres passés aux Shaders: position, sources de lumière (Vecteurs), Matrices.</li>
       </ul>
       <h3>Commandes</h3>
       <ul>
-        <li>Manipulation de Shaders: glCreateProgram, glAttachShader, glLinkProgram, glUseProgram.</li>
+        <li>Setup: Viewports, compilation de Shaders, initialisations diverses...</li>
+        <li>Paramètres passés aux Shaders: Matrice MVP, Position, Sources de lumière, </li>
+        <li>Et enfin, glDraw*** !</li>
       </ul>      
     </section>
 
