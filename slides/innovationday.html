@@ -31,17 +31,35 @@
   <link rel="stylesheet" media="print" href="../core/print.css">
 
   <script src="../modernizr.custom.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full"></script>
 </head>
 
 <body>
   <div class="deck-container">
+
+    <section class="slide" id="math">
+      <h2>OpenGL ES 2.0 - Maths</h2>
+      <h3>Matrices: Tranformations</h3>
+      <p>
+      Translation `[[1,0,0,dx], [0,1,0,dy], [0,0,1,dz], [0,0,0,1]]` &nbsp;
+      Scaling `[[sx,0,0,0], [0,sy,0,0], [0,0,sz,0], [0,0,0,1]]` &nbsp;
+      Rotation (Z-axis) `[[cos(theta),-sin(theta),0,0], [sin(theta),cos(theta),0,0], [0,0,1,0], [0,0,0,1]]`
+      </p>
+      <h3>Matrices: Model - View - Projection</h3>
+      <ul>
+      <li>Model: <em>Model</em> coords -> <em>World</em> coords.</li>
+      <li>View: <em>World</em> coords -> <em>Camera</em> coords. <code>Matrix.setLookAtM()</code></li>
+      <li>Projection: <em>Camera</em> coords -> <em>Screen</em> coords. <code>Matrix.perspectiveM(), Matrix.orthoM()</code></li>       
+      </ul>
+    </section>
+
 
     <!-- Begin slides -->
     <section class="slide">
       <img src="innodays2015.png" alt="cover" />
     </section>
 
-    <section class="slide">
+    <section class="slide" id="title">
       <h2>Toulouse Android User Group</h2>
       <h1>
         OpenGL ES 2.0<br />
@@ -50,7 +68,7 @@
       </h1>
     </section>
 
-    <section class="slide">
+    <section class="slide" id="toc">
       <h2>Au programme</h2>
       <ol>
         <!--li class="slide"-->
@@ -71,7 +89,7 @@
       </ol>
     </section>
 
-    <section class="slide">
+    <section class="slide" id="elements">
       <h2>OpenGL ES 2.0</h2>
       <h3>Eléments</h3>
       <ul>
@@ -86,6 +104,7 @@
         <li>Et enfin, <em>glDraw***</em> !</li>
       </ul>      
     </section>
+
 
     <!-- deck.navigation snippet -->
     <div aria-role="navigation">
