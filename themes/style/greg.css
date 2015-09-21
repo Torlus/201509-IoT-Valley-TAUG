@@ -359,6 +359,10 @@ code {
   color: #789;
 }
 
+pre {
+  font-size: 70%;
+}
+
 blockquote {
   font-family: "Hoefler Text", Constantia, Palatino, "Palatino Linotype", "Book Antiqua", Georgia, serif;
   font-size: 2em;
@@ -431,7 +435,8 @@ a:hover, a:focus {
 }
 
 .deck-container {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+  /* font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif; */
+  font-family: "Open Sans";
   font-size: 1.75em;
   background: #f4fafe;
   /* Old browsers */
@@ -448,9 +453,10 @@ a:hover, a:focus {
   background: linear-gradient(top, #f4fafe 0%, #ccf0f0 100%);
   /* W3C */
   background-attachment: fixed;
-  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
 }
 .deck-container > .slide {
+  /* padding: 0 48px; */
   padding: 0 48px;
 }
 
@@ -498,4 +504,19 @@ a:hover, a:focus {
 }
 .boxshadow .goto-form {
   box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+.two-columns-left {
+  overflow:auto;
+  margin-left: 0;
+  margin-right: auto;
+  width: 49%;
+  float: left;
+}
+.two-columns-right {
+  overflow:auto;
+  margin-left: auto;
+  margin-right: 0;
+  width: 49%;
+  float: right;
 }

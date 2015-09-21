@@ -9,8 +9,8 @@
 
   <title>OpenGL ES 2.0 - Shaders - VR avec le CardBoard SDK</title>
 
-  <meta name="description" content="A jQuery library for modern HTML presentations">
-  <meta name="author" content="Caleb Troughton">
+  <meta name="description" content="OpenGL ES 2.0 - Shaders - VR avec le CardBoard SDK">
+  <meta name="author" content="Gregory Estrade">
   <meta name="viewport" content="width=1024, user-scalable=no">
 
   <!-- Core and extension CSS files -->
@@ -32,31 +32,29 @@
 
   <script src="../modernizr.custom.js"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full"></script>
+
 </head>
 
 <body>
   <div class="deck-container">
 
-    <section class="slide" id="math">
-      <h2>OpenGL ES 2.0 - Maths</h2>
-      <h3>Matrices: Tranformations</h3>
-      <p>
-      Translation `[[1,0,0,dx], [0,1,0,dy], [0,0,1,dz], [0,0,0,1]]` &nbsp;
-      Scaling `[[sx,0,0,0], [0,sy,0,0], [0,0,sz,0], [0,0,0,1]]` &nbsp;
-      Rotation (Z-axis) `[[cos(theta),-sin(theta),0,0], [sin(theta),cos(theta),0,0], [0,0,1,0], [0,0,0,1]]`
-      </p>
-      <h3>Matrices: Model - View - Projection</h3>
+    <section class="slide" id="sdk">
+      <h2>Utilisation du SDK</h2>
       <ul>
-      <li>Model: <em>Model</em> coords -> <em>World</em> coords.</li>
-      <li>View: <em>World</em> coords -> <em>Camera</em> coords. <code>Matrix.setLookAtM()</code></li>
-      <li>Projection: <em>Camera</em> coords -> <em>Screen</em> coords. <code>Matrix.perspectiveM(), Matrix.orthoM()</code></li>       
+        <li>Deux <em>viewports</em>, une méthode <code>onDrawEye(Eye eve)</code>.</li>
+        <li>Génération des matrices adaptées: 
+          <ul>
+            <li><code>eye.getEyeView()</code></li>
+            <li><code>eye.getPerspective(Z_NEAR, Z_FAR)</code></li>
+          </ul>
+        <li>Données de l'<em>acceleromètre</em> disponibles sous forme d'une matrice de transformation: <code>headTransform.getHeadView(...)</code></li>
+        <li>Appui sur la "détente": une méthode <code>onCardboardTrigger()</code></li>
       </ul>
     </section>
 
-
     <!-- Begin slides -->
-    <section class="slide">
-      <img src="innodays2015.png" alt="cover" />
+    <section class="slide" id="ugly">
+      <img src="innodays2015_title.png" alt="cover" />
     </section>
 
     <section class="slide" id="title">
@@ -64,7 +62,7 @@
       <h1>
         OpenGL ES 2.0<br />
         Shaders<br />
-        CardBoard SDK<br />
+        Cardboard SDK<br />
       </h1>
     </section>
 
@@ -83,7 +81,7 @@
         </li>
         <!--li class="slide"-->
         <li>
-          <h3>CardBoard</h3>
+          <h3>Cardboard</h3>
           <p>Présentation de l'accessoire, utilisation du SDK</p>
         </li>
       </ol>
@@ -105,6 +103,113 @@
       </ul>      
     </section>
 
+    <section class="slide" id="math">
+      <h2>OpenGL ES 2.0 - Maths</h2>
+      <h3>Matrices: Tranformations</h3>
+      <p><small>
+      Translation `[[1,0,0,dx], [0,1,0,dy], [0,0,1,dz], [0,0,0,1]]` &nbsp;
+      Scaling `[[sx,0,0,0], [0,sy,0,0], [0,0,sz,0], [0,0,0,1]]` &nbsp;
+      Rotation (Z-axis) `[[cos(theta),-sin(theta),0,0], [sin(theta),cos(theta),0,0], [0,0,1,0], [0,0,0,1]]`
+      </small></p>
+      <h3>Matrices: Model - View - Projection</h3>
+      <ul>
+      <li>Model: <em>Model</em> coords -> <em>World</em> coords.</li>
+      <li>View: <em>World</em> coords -> <em>Camera</em> coords. <code>Matrix.setLookAtM()</code></li>
+      <li>Projection: <em>Camera</em> coords -> <em>Screen</em> coords. <code>Matrix.perspectiveM(), Matrix.orthoM()</code></li>       
+      </ul>
+    </section>
+
+    <section class="slide" id="pipeline">
+      <h2>OpenGL ES 2.0 - Processing</h2>
+      <h3>Pipeline de rendu</h3>
+      <img src="pipeline.png" alt="pipeline" />
+      <h3>Optimisations</h3>
+      <p>Facteurs limitants: Memory <em>bandwidth</em>, <em>Fillrate</em>, Cache <em>misses</em>.</p>
+      <ul>
+        <li>Utiliser les <em>VBO</em>s (Vertex Buffer Objects). Préférer <code>GL_TRIANGLE_STRIP</code>.</li>
+        <li>Bien filtrer en amont. <em>BSP</em> trees (Binary Space Partition).
+        <li>A choisir, soigner le rendu lumineux plutôt que les textures. <em>Mipmapping</em>.</li> 
+      </ul>
+    </section>
+
+    <section class="slide" id="vertex_shaders">
+      <h2>OpenGL ES 2.0 - Vertex Shaders</h2>
+      
+      <section class="two-columns-left">
+<pre><code>uniform mat4 u_MVP;
+uniform vec3 u_LightPos;
+
+attribute vec4 a_Position;
+attribute vec4 a_Color;
+attribute vec3 a_Normal;
+
+varying vec4 v_Color;
+
+void main() {
+  ...
+  
+  v_Color = a_Color * diffuse;
+  gl_Position = u_MVP * a_Position;
+}</code></pre>
+      </section>
+      <section class="two-columns-right">
+        <h3>Entrées</h3>
+        <ul>
+          <li><em>uniform</em>: paramètres fixes.</li>
+          <li><em>attribute</em>: vertex attributes.</li>
+        </ul>
+        <h3>Sorties</h3>
+        <ul>
+          <li><em>variables réservées</em>: <code>gl_Position, gl_TexCoord</code>...
+          <li><em>varying</em>: valeur calculée au sommet, qui sera <em>interpolée</em> lors de la rasterisation, et passée au <em>Fragment Shader</em></li>
+        </ul>
+        <h3>Opérations</h3>
+        <p>Trigonométrie, produits scalaires, vectoriels, multiplications de matrices...</p>
+      </section>
+    </section>
+
+    <section class="slide" id="fragment_shaders">
+      <h2>OpenGL ES 2.0 - Fragment Shaders</h2>
+      
+      <section class="two-columns-left">
+<pre><code>precision mediump float;
+varying vec4 v_Color;
+varying vec3 v_Grid;
+
+void main() {
+    // Calculate world-space distance.
+    float depth = gl_FragCoord.z / gl_FragCoord.w; 
+    if ((mod(abs(v_Grid.x), 10.0) &lt; 0.1) 
+      || (mod(abs(v_Grid.z), 10.0) &lt; 0.1)) {
+        gl_FragColor = my_func( depth, v_Color );
+    } else {
+        gl_FragColor = v_Color;
+    }
+}
+</code></pre>
+      </section>
+      <section class="two-columns-right">
+        <h3>Entrées</h3>
+        <ul>
+          <li><em>uniform</em>: paramètres fixes.</li>
+          <li><em>varying</em>: valeurs interpolées.</li>
+        </ul>
+        <h3>Sorties</h3>
+        <ul>
+          <li><em>variables réservées</em>: <code>gl_FragColor</code>...
+          <li>mot-clé <em>discard</em>: élimine le pixel du rendu.</li>
+        </ul>
+      </section>
+    </section>
+
+    <section class="slide" id="cardboard">
+      <h2>Présentation du Cardboard Kit</h2>
+      <img src="cardboard.png" alt="cardboard" />
+    </section>
+
+    <section class="slide" id="questions">
+      <h1>Questions ?</h1>
+    </section>
 
     <!-- deck.navigation snippet -->
     <div aria-role="navigation">
